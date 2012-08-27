@@ -1,3 +1,16 @@
+Sapir
+===============
+
+Authors
+-------
+* erezak (Erez A. Korn)
+
+Inspiration
+-----------
+* Sapir Levi-Korn
+
+[Official Site](http://sapir-rom.blogspot.com)
+
 CyanogenMod
 ===============
 

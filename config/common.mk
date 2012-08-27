@@ -68,7 +68,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Copy over the changelog to the device
 PRODUCT_COPY_FILES += \
-    vendor/cm/CHANGELOG.mkdn:system/etc/CHANGELOG-CM.txt
+    vendor/erez/CHANGELOG.mkdn:system/etc/CHANGELOG-SAPIR.html
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
@@ -145,8 +145,7 @@ PRODUCT_PACKAGES += \
     libcyanogen-dsp \
     audio_effects.conf \
     CMWallpapers \
-    Apollo \
-    CMUpdater
+    Apollo
 
 # Extra tools in CM
 PRODUCT_PACKAGES += \
@@ -195,8 +194,6 @@ endif
 
 ifdef CM_BUILDTYPE
     ifdef CM_EXTRAVERSION
-        # Force build type to EXPERIMENTAL
-        CM_BUILDTYPE := EXPERIMENTAL
         # Add leading dash to CM_EXTRAVERSION
         CM_EXTRAVERSION := -$(CM_EXTRAVERSION)
     endif
@@ -207,11 +204,27 @@ else
 endif
 
 ifdef CM_RELEASE
-    CM_VERSION := $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)$(PRODUCT_VERSION_DEVICE_SPECIFIC)-$(CM_BUILD)
+    CM_VERSION := Sapir-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)$(PRODUCT_VERSION_DEVICE_SPECIFIC)-$(CM_BUILD)
 else
-    CM_VERSION := $(PRODUCT_VERSION_MAJOR)-$(shell date -u +%Y%m%d)-$(CM_BUILDTYPE)-$(CM_BUILD)$(CM_EXTRAVERSION)
+  ifeq "" "$(CUSTOM_BUILD_DATE)"
+    CM_VERSION := Sapir-$(PRODUCT_VERSION_MAJOR)-$(shell date -u +%Y%m%d)-$(CM_BUILDTYPE)-$(CM_BUILD)$(CM_EXTRAVERSION)
+  else
+    CM_VERSION := Sapir-$(PRODUCT_VERSION_MAJOR)-$(shell date -d @$(CUSTOM_BUILD_DATE) -u +%Y%m%d)-$(CM_BUILDTYPE)-$(CM_BUILD)$(CM_EXTRAVERSION)
+  endif
 endif
 
 PRODUCT_PROPERTY_OVERRIDES += \
   ro.cm.version=$(CM_VERSION) \
   ro.modversion=$(CM_VERSION)
+
+PRODUCT_PROPERTY_OVERRIDES += \
+  ro.goo.developerid=erezak \
+  ro.goo.board=$(CM_BUILD) \
+  ro.goo.rom=Sapir
+ifneq ($(CUSTOM_GOO_VERSION),)
+PRODUCT_PROPERTY_OVERRIDES += \
+  ro.goo.version=$(CUSTOM_GOO_VERSION)
+else
+PRODUCT_PROPERTY_OVERRIDES += \
+  ro.goo.version=$(shell date +%s)
+endif
