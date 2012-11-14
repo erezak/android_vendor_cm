@@ -229,3 +229,5 @@ else
 PRODUCT_PROPERTY_OVERRIDES += \
   ro.goo.version=$(shell date +%s)
 endif
+
+-include $(WORKSPACE)/hudson/image-auto-bits.mk
